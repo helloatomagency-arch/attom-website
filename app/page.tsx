@@ -27,7 +27,7 @@ export default function Home() {
             About
           </a>
           <a href="#services" className="hover:opacity-60">
-            Expertise
+            What we do
           </a>
           <a href="#contact" className="hover:opacity-60">
             Contact
