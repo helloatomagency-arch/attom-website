@@ -52,12 +52,16 @@ Timeline: ${timeline}
 
       const result = await res.json();
 
-      if (result.success) {
-        alert("Message sent successfully.");
-        form.reset();
-      } else {
-        alert("There was an error sending your message. Please try again.");
+      if (!res.ok) {
+        alert(
+          result.error ||
+            "There was an error sending your message. Please try again."
+        );
+        return;
       }
+
+      alert("Message sent successfully.");
+      form.reset();
     } catch (error) {
       console.error(error);
       alert("There was an error sending your message. Please try again.");

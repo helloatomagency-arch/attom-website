@@ -15,12 +15,28 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    console.log("BODY:", body);
-
     const { name, email, message } = body;
 
+    console.log("BODY:", { name, email, message });
+
+    if (!name || !email || !message) {
+      return Response.json(
+        { success: false, error: "Preenche todos os campos" },
+        { status: 400 }
+      );
+    }
+
+    const emailIsValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+    if (!emailIsValid) {
+      return Response.json(
+        { success: false, error: "Email inválido" },
+        { status: 400 }
+      );
+    }
+
     const data = await resend.emails.send({
-      from: "onboarding@resend.dev",
+      from: "ATTOM <onboarding@resend.dev>",
       to: "hello.atomagency@gmail.com",
       subject: "New Contact Form Submission",
       replyTo: email,
@@ -34,9 +50,10 @@ export async function POST(req: Request) {
 
     console.log("RESEND RESPONSE:", data);
 
-    return Response.json({ success: true, data });
+    return Response.json({ success: true });
   } catch (error) {
     console.error("API CONTACT ERROR:", error);
+
     return Response.json(
       { success: false, error: "Failed to send email" },
       { status: 500 }
