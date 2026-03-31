@@ -3,13 +3,14 @@ import { Resend } from "resend";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: Request) {
-  const body = await req.json();
-
-  const { name, email, message } = body;
-
   try {
-    await resend.emails.send({
-      from: "ATTOM <onboarding@resend.dev>",
+    const body = await req.json();
+    console.log("BODY RECEBIDO:", body);
+
+    const { name, email, message } = body;
+
+    const data = await resend.emails.send({
+      from: "onboarding@resend.dev",
       to: "hello.atomagency@gmail.com",
       subject: "New Contact Form Submission",
       html: `
@@ -20,9 +21,11 @@ export async function POST(req: Request) {
       `,
     });
 
+    console.log("RESEND OK:", data);
+
     return Response.json({ success: true });
   } catch (error) {
-    console.error(error);
+    console.error("ERRO API CONTACT:", error);
     return Response.json(
       { success: false, error: "Failed to send email" },
       { status: 500 }
