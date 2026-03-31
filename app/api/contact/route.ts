@@ -4,6 +4,13 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: Request) {
   try {
+    if (!process.env.RESEND_API_KEY) {
+      return Response.json(
+        { success: false, error: "Missing RESEND_API_KEY" },
+        { status: 500 }
+      );
+    }
+
     const body = await req.json();
     const { name, email, message } = body;
 
@@ -14,7 +21,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const data = await resend.emails.send({
+    const { data, error } = await resend.emails.send({
       from: "ATTOM <jessica@attom.agency>",
       to: "jessica@attom.agency",
       subject: "New Contact Form Submission",
@@ -27,9 +34,19 @@ export async function POST(req: Request) {
       `,
     });
 
-    return Response.json({ success: true });
+    console.log("RESEND DATA:", data);
+    console.log("RESEND ERROR:", error);
+
+    if (error) {
+      return Response.json(
+        { success: false, error: error.message || "Email failed to send" },
+        { status: 500 }
+      );
+    }
+
+    return Response.json({ success: true, data });
   } catch (error) {
-    console.error(error);
+    console.error("API CONTACT ERROR:", error);
 
     return Response.json(
       { success: false, error: "Failed to send email" },
