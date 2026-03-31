@@ -24,13 +24,13 @@ export default function Home() {
 
         <nav className="flex items-center gap-8 text-sm">
           <a href="#about" className="hover:opacity-60">
-            About
+            ABOUT
           </a>
           <a href="#services" className="hover:opacity-60">
-            What we do
+            WHAT WE DO
           </a>
           <a href="#contact" className="hover:opacity-60">
-            Contact
+            CONTACT
           </a>
         </nav>
       </header>
