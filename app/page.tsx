@@ -69,7 +69,7 @@ Timeline: ${timeline}
       <header className="flex items-center justify-between mb-24">
         <p className="text-xl font-semibold">ATTOM Agency</p>
 
-        <nav className="flex items-center gap-8 text-sm">
+        <nav className="flex items-center gap-8 text-sm uppercase tracking-[0.15em]">
           <a href="#about" className="hover:opacity-60">
             ABOUT
           </a>
