@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 
 export default function Home() {
   const [cookieChoice, setCookieChoice] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState<string | null>(null);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   useEffect(() => {
     const savedChoice = localStorage.getItem("attom_cookie_consent");
@@ -20,6 +23,10 @@ export default function Home() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    setIsSubmitting(true);
+    setSubmitMessage(null);
+    setSubmitError(null);
+
     const form = e.currentTarget;
     const formData = new FormData(form);
 
@@ -30,13 +37,6 @@ export default function Home() {
     const budget = String(formData.get("budget") || "");
     const timeline = String(formData.get("timeline") || "");
 
-    const message = `
-Company / Brand: ${company}
-What are you looking to build: ${projectDetails}
-Estimated budget: ${budget}
-Timeline: ${timeline}
-    `.trim();
-
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
@@ -46,32 +46,36 @@ Timeline: ${timeline}
         body: JSON.stringify({
           name,
           email,
-          message,
+          company,
+          projectDetails,
+          budget,
+          timeline,
         }),
       });
 
       const result = await res.json();
 
       if (!res.ok) {
-        alert(
-          result.error ||
-            "There was an error sending your message. Please try again."
+        setSubmitError(
+          result.error || "There was an error sending your message."
         );
         return;
       }
 
-      alert("Message sent successfully.");
+      setSubmitMessage("Your message has been sent successfully.");
       form.reset();
     } catch (error) {
       console.error(error);
-      alert("There was an error sending your message. Please try again.");
+      setSubmitError("There was an error sending your message.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
     <main className="min-h-screen bg-white text-black px-6 py-8 md:px-12">
       <header className="flex items-center justify-between mb-24">
-        <p className="text-xl font-semibold">ATTOM Agency</p>
+        <p className="text-xl font-semibold">ATTOM AGENCY</p>
 
         <nav className="flex items-center gap-8 text-sm uppercase tracking-[0.15em]">
           <a href="#about" className="hover:opacity-60">
@@ -279,15 +283,24 @@ Timeline: ${timeline}
 
           <button
             type="submit"
-            className="bg-black text-white px-6 py-3 text-sm font-medium hover:opacity-90 transition"
+            disabled={isSubmitting}
+            className="bg-black text-white px-6 py-3 text-sm font-medium hover:opacity-90 transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Let’s build your brand
+            {isSubmitting ? "Sending..." : "Let’s build your brand"}
           </button>
+
+          {submitMessage && (
+            <p className="text-sm text-green-700">{submitMessage}</p>
+          )}
+
+          {submitError && (
+            <p className="text-sm text-red-600">{submitError}</p>
+          )}
         </form>
       </section>
 
       <footer className="border-t border-gray-200 pt-8 pb-10 flex flex-col md:flex-row md:items-center md:justify-between gap-4 text-sm text-gray-600">
-        <p>© 2026 ATTOM Agency. All rights reserved.</p>
+        <p>© 2026 ATTOM AGENCY. All rights reserved.</p>
 
         <div className="flex flex-wrap items-center gap-6">
           <a
