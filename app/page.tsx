@@ -53,21 +53,22 @@ export default function Home() {
         }),
       });
 
-      await fetch(
-        "https://script.google.com/macros/s/AKfycbxHbV-JRFYIyP9XOtxSAwh_Zx3NwGKRarxJxcugOh1dBDVTL3oG_ILBJ1YbifBagquKAg/exec",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            name,
-            email,
-            company,
-            projectDetails,
-            budget,
-            timeline,
-            date: new Date().toISOString(),
-          }),
-        }
-      );
+    await fetch("https://script.google.com/macros/s/AKfycbxHbV-JRFYIyP9XOtxSAwh_Zx3NwGKRarxJxcugOh1dBDVTL3oG_ILBJ1YbifBagquKAg/exec", {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8",
+      },
+      body: JSON.stringify({
+        name,
+        email,
+       company,
+       projectDetails,
+       budget,
+       timeline,
+       date: new Date().toISOString(),
+      }),
+    });
 
       const result = await res.json();
 
