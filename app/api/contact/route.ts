@@ -2,6 +2,9 @@ import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+const GOOGLE_SHEETS_WEBHOOK_URL =
+  "https://script.google.com/macros/s/AKfycbxHbV-JRFYIyP9XOtxSAwh_Zx3NwGKRarxJxcugOh1dBDVTL3oG_ILBJ1YbifBagquKAg/exec";
+
 export async function POST(req: Request) {
   try {
     if (!process.env.RESEND_API_KEY) {
@@ -20,7 +23,14 @@ export async function POST(req: Request) {
     const budget = String(body.budget || "").trim();
     const timeline = String(body.timeline || "").trim();
 
-    if (!name || !email || !company || !projectDetails || !budget || !timeline) {
+    if (
+      !name ||
+      !email ||
+      !company ||
+      !projectDetails ||
+      !budget ||
+      !timeline
+    ) {
       return Response.json(
         { success: false, error: "Please fill in all required fields." },
         { status: 400 }
@@ -195,6 +205,28 @@ ${projectDetails}
         },
         { status: 500 }
       );
+    }
+
+    try {
+      const sheetsResponse = await fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "text/plain;charset=utf-8",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          company,
+          projectDetails,
+          budget,
+          timeline,
+          date: new Date().toISOString(),
+        }),
+      });
+
+      console.log("GOOGLE SHEETS STATUS:", sheetsResponse.status);
+    } catch (sheetsError) {
+      console.error("GOOGLE SHEETS ERROR:", sheetsError);
     }
 
     return Response.json({
