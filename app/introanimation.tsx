@@ -13,7 +13,7 @@ export default function IntroAnimation() {
     if (letrasVisiveis < TEXTO.length) {
       const timer = setTimeout(() => {
         setLetrasVisiveis((prev) => prev + 1);
-      }, 80);
+      }, 100);
       return () => clearTimeout(timer);
     }
 
@@ -34,24 +34,26 @@ export default function IntroAnimation() {
       className="fixed inset-0 z-[9999] flex items-center justify-center bg-white"
       style={{ opacity: fadeOut ? 0 : 1, transition: "opacity 0.6s ease" }}
     >
-      <div className="relative flex items-center justify-center" style={{ width: "90vw", height: "40vh" }}>
+      <p style={{
+        fontSize: "clamp(40px, 10vw, 140px)",
+        fontWeight: 700,
+        letterSpacing: "0.1em",
+        color: "black",
+        whiteSpace: "nowrap",
+      }}>
         {TEXTO.split("").map((letra, i) => (
           <span
             key={i}
             style={{
-              position: "absolute",
-              fontSize: "clamp(80px, 18vw, 260px)",
-              fontWeight: 700,
-              color: "black",
               opacity: i < letrasVisiveis ? 1 : 0,
-              transition: "opacity 0.15s ease",
-              letterSpacing: "-0.02em",
+              transition: "opacity 0.2s ease",
+              display: "inline-block",
             }}
           >
-            {letra}
+            {letra === " " ? "\u00A0" : letra}
           </span>
         ))}
-      </div>
+      </p>
     </div>
   );
 }
