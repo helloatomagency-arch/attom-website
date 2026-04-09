@@ -2,30 +2,38 @@
 
 import { useEffect, useState } from "react";
 
-const TEXTO = "ATTOM AGENCY";
+const LETRAS = ["A", "T", "T", "O", "M", " ", "A", "G", "E", "N", "C", "Y"];
 
 export default function IntroAnimation() {
-  const [letrasVisiveis, setLetrasVisiveis] = useState(0);
+  const [letraAtual, setLetraAtual] = useState(0);
+  const [mostrarCompleto, setMostrarCompleto] = useState(false);
   const [fadeOut, setFadeOut] = useState(false);
   const [terminado, setTerminado] = useState(false);
 
   useEffect(() => {
-    if (letrasVisiveis < TEXTO.length) {
+    if (letraAtual < LETRAS.length) {
       const timer = setTimeout(() => {
-        setLetrasVisiveis((prev) => prev + 1);
-      }, 100);
+        setLetraAtual((prev) => prev + 1);
+      }, 120);
       return () => clearTimeout(timer);
     }
 
-    const timer = setTimeout(() => {
-      setFadeOut(true);
-      setTimeout(() => {
-        setTerminado(true);
-      }, 600);
-    }, 700);
+    // Quando acabou de mostrar todas as letras, mostra o texto completo
+    const timer1 = setTimeout(() => {
+      setMostrarCompleto(true);
+    }, 100);
 
-    return () => clearTimeout(timer);
-  }, [letrasVisiveis]);
+    // Depois faz fade out
+    const timer2 = setTimeout(() => {
+      setFadeOut(true);
+      setTimeout(() => setTerminado(true), 600);
+    }, 900);
+
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+    };
+  }, [letraAtual]);
 
   if (terminado) return null;
 
@@ -35,24 +43,17 @@ export default function IntroAnimation() {
       style={{ opacity: fadeOut ? 0 : 1, transition: "opacity 0.6s ease" }}
     >
       <p style={{
-        fontSize: "clamp(40px, 10vw, 140px)",
+        fontSize: "clamp(30px, 7vw, 100px)",
         fontWeight: 700,
-        letterSpacing: "0.1em",
+        letterSpacing: "0.05em",
         color: "black",
         whiteSpace: "nowrap",
       }}>
-        {TEXTO.split("").map((letra, i) => (
-          <span
-            key={i}
-            style={{
-              opacity: i < letrasVisiveis ? 1 : 0,
-              transition: "opacity 0.2s ease",
-              display: "inline-block",
-            }}
-          >
-            {letra === " " ? "\u00A0" : letra}
-          </span>
-        ))}
+        {mostrarCompleto
+          ? "ATTOM AGENCY"
+          : LETRAS[letraAtual - 1] === " " || letraAtual === 0
+          ? "\u00A0"
+          : LETRAS[letraAtual - 1]}
       </p>
     </div>
   );
