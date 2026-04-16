@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { DM_Sans, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import IntroAnimation from "./IntroAnimation.tsx";
+import IntroAnimation from "./IntroAnimation";
 import CustomCursor from "./CustomCursor";
 
 const dmSans = DM_Sans({

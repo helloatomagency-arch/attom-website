@@ -1,4 +1,6 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   --background: #ffffff;
@@ -36,6 +38,25 @@ body {
 
 * {
   cursor: none !important;
+}
+
+.cursor {
+  position: fixed;
+  pointer-events: none;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  background-color: black;
+  border-radius: 50%;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s ease;
 }
 
 .reveal {
