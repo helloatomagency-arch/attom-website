@@ -1,15 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useApp } from "@/contexts/AppContext";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 export default function Home() {
+  const { theme } = useApp();
+  const isDark = theme === "dark";
   const [cookieChoice, setCookieChoice] = useState<string | null>(null);
 
   useEffect(() => {
     const savedChoice = localStorage.getItem("attom_cookie_consent");
-    if (savedChoice) {
-      setCookieChoice(savedChoice);
-    }
+    if (savedChoice) setCookieChoice(savedChoice);
   }, []);
 
   const handleCookieChoice = (choice: "accepted" | "rejected") => {
@@ -18,24 +21,9 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen flex flex-col bg-white text-black px-6 pt-8 pb-0 md:px-12">
-      <header className="flex items-center justify-between mb-24">
-        <a href="/">
-          <img src="/logo_v2.png" alt="ATTOM" className="h-12 md:h-16 w-auto" />
-        </a>
+    <main className={`min-h-screen flex flex-col px-6 pb-0 md:px-12 ${isDark ? "bg-black text-white" : "bg-white text-black"}`}>
 
-        <nav className="flex items-center gap-8 text-sm uppercase tracking-[0.15em]">
-          <a href="/about" className="hover:opacity-60">
-            ABOUT
-          </a>
-          <a href="/what-we-do" className="hover:opacity-60">
-            WHAT WE DO
-          </a>
-          <a href="/contact" className="hover:opacity-60">
-            CONTACT
-          </a>
-        </nav>
-      </header>
+      <Header />
 
       {/* ── HERO ── */}
       <section className="flex flex-1 items-center">
@@ -49,13 +37,13 @@ export default function Home() {
             are built to last.
           </h1>
 
-          <p className="mt-10 max-w-lg text-base leading-relaxed text-gray-500 md:text-lg">
-            We work on what holds them togheter.
+          <p className={`mt-10 max-w-lg text-base leading-relaxed md:text-lg ${isDark ? "text-gray-400" : "text-gray-500"}`}>
+            We work on what holds them together.
           </p>
 
           <a
             href="/what-we-do"
-            className="mt-10 inline-block bg-black px-5 py-3 text-sm font-medium text-white transition hover:opacity-90"
+            className={`mt-10 inline-block px-5 py-3 text-sm font-medium transition hover:opacity-90 ${isDark ? "bg-white text-black" : "bg-black text-white"}`}
           >
             See how →
           </a>
@@ -63,60 +51,34 @@ export default function Home() {
       </section>
       {/* ── FIM DO HERO ── */}
 
-      <footer className="mt-auto pt-20 pb-12 flex flex-col gap-4 text-sm text-gray-600 md:flex-row md:items-center md:justify-between">
-        <p>© 2026 ATTOM AGENCY. All rights reserved.</p>
+      <Footer />
 
-        <div className="flex flex-wrap items-center gap-6">
-          <a
-            href="/privacy-policy"
-            className="hover:text-black transition underline-offset-4 hover:underline"
-          >
-            Privacy Policy
-          </a>
-          <a
-            href="/cookie-policy"
-            className="hover:text-black transition underline-offset-4 hover:underline"
-          >
-            Cookie Policy
-          </a>
-          <a
-            href="/terms-and-conditions"
-            className="hover:text-black transition underline-offset-4 hover:underline"
-          >
-            Terms & Conditions
-          </a>
-        </div>
-      </footer>
-
+      {/* COOKIES */}
       {!cookieChoice && (
-        <div className="fixed bottom-6 left-6 right-6 z-50 border border-gray-200 bg-white p-5 shadow-lg md:left-12 md:right-12">
+        <div className={`fixed bottom-6 left-6 right-6 z-50 border p-5 shadow-lg md:left-12 md:right-12 ${isDark ? "bg-black border-gray-700" : "bg-white border-gray-200"}`}>
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div className="max-w-2xl">
               <p className="mb-2 text-sm font-medium">Cookies</p>
-              <p className="text-sm leading-relaxed text-gray-600">
+              <p className={`text-sm leading-relaxed ${isDark ? "text-gray-400" : "text-gray-600"}`}>
                 We use cookies to improve your browsing experience and analyse
                 website traffic. You can accept or reject non-essential cookies.
                 Read our{" "}
-                <a
-                  href="/cookie-policy"
-                  className="underline underline-offset-4"
-                >
+                <a href="/cookie-policy" className="underline underline-offset-4">
                   Cookie Policy
                 </a>{" "}
                 for more information.
               </p>
             </div>
-
             <div className="flex items-center gap-3">
               <button
                 onClick={() => handleCookieChoice("rejected")}
-                className="border border-gray-300 px-5 py-3 text-sm font-medium transition hover:border-black"
+                className={`border px-5 py-3 text-sm font-medium transition ${isDark ? "border-gray-600 hover:border-white" : "border-gray-300 hover:border-black"}`}
               >
                 Reject
               </button>
               <button
                 onClick={() => handleCookieChoice("accepted")}
-                className="bg-black px-5 py-3 text-sm font-medium text-white transition hover:opacity-90"
+                className={`px-5 py-3 text-sm font-medium transition hover:opacity-90 ${isDark ? "bg-white text-black" : "bg-black text-white"}`}
               >
                 Accept
               </button>

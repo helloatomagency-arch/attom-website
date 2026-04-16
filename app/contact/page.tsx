@@ -1,54 +1,37 @@
 "use client";
 
 import { useState } from "react";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { useApp } from "@/contexts/AppContext";
 
 export default function ContactPage() {
+  const { theme } = useApp();
+  const d = theme === "dark";
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState<string | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     setIsSubmitting(true);
     setSubmitMessage(null);
     setSubmitError(null);
-
     const form = e.currentTarget;
     const formData = new FormData(form);
-
-    const name = String(formData.get("name") || "");
-    const email = String(formData.get("email") || "");
-    const company = String(formData.get("company") || "");
-    const projectDetails = String(formData.get("projectDetails") || "");
-    const budget = String(formData.get("budget") || "");
-    const timeline = String(formData.get("timeline") || "");
-
+    const payload = {
+      name: String(formData.get("name") || ""),
+      email: String(formData.get("email") || ""),
+      company: String(formData.get("company") || ""),
+      projectDetails: String(formData.get("projectDetails") || ""),
+      budget: String(formData.get("budget") || ""),
+      timeline: String(formData.get("timeline") || ""),
+    };
     try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          company,
-          projectDetails,
-          budget,
-          timeline,
-        }),
-      });
-
+      const res = await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
       const result = await res.json();
-
-      if (!res.ok) {
-        setSubmitError(
-          result.error || "There was an error sending your message."
-        );
-        return;
-      }
-
+      if (!res.ok) { setSubmitError(result.error || "There was an error sending your message."); return; }
       setSubmitMessage("Your message has been sent successfully.");
       form.reset();
     } catch (error) {
@@ -59,167 +42,67 @@ export default function ContactPage() {
     }
   };
 
+  const inputClass = `w-full border-b py-3 outline-none text-base bg-transparent transition ${
+    d ? "border-gray-700 focus:border-white text-white" : "border-gray-200 focus:border-black text-black"
+  }`;
+
   return (
-    <main className="min-h-screen flex flex-col bg-white text-black px-6 pt-8 pb-0 md:px-12">
-      <header className="flex items-center justify-between mb-24">
-        <a href="/">
-          <img
-            src="/logo_v2.png"
-            alt="ATTOM"
-            className="h-12 md:h-15 w-auto"
-          />
-        </a>
+    <main className={`min-h-screen flex flex-col ${d ? "bg-black text-white" : "bg-white text-black"}`}>
+      <Header />
 
-        <nav className="flex items-center gap-8 text-sm uppercase tracking-[0.15em]">
-          <a href="/about" className="hover:opacity-60">
-            ABOUT
-          </a>
-          <a href="/what-we-do" className="hover:opacity-60">
-            WHAT WE DO
-          </a>
-          <a href="/contact" className="hover:opacity-60">
-            CONTACT
-          </a>
-        </nav>
-      </header>
-
-      <section className="pt-16 pb-24 grid md:grid-cols-2 gap-12">
-        <div>
-          <p className="text-sm uppercase tracking-[0.2em] text-gray-500 mb-4">
-            Contact
-          </p>
-
-          <h1 className="text-3xl md:text-4xl font-medium leading-tight max-w-md">
-            Let’s build something that stands out.
+      <section className="px-6 md:px-16 lg:px-24 pt-8 pb-32 grid md:grid-cols-2 gap-16 md:gap-24">
+        <div className="max-w-md">
+          <p className="text-[11px] uppercase tracking-[0.3em] text-gray-400 mb-10">Contact</p>
+          <h1 className="text-3xl md:text-4xl font-medium leading-[1.1] tracking-tight mb-8">
+            Let's build something<br />
+            <em className="font-light text-gray-400">that stands out.</em>
           </h1>
-
-          <p className="text-base md:text-lg text-gray-600 leading-relaxed mt-6 max-w-md">
-            Tell us about your brand, goals and timeline. We’ll get back to you
-            with the next steps.
+          <p className={`text-base md:text-lg leading-relaxed ${d ? "text-gray-400" : "text-gray-500"}`}>
+            Tell us about your brand, goals and timeline. We'll get back to you within 1 to 2 business days.
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-5 max-w-xl">
-          <div>
-            <label className="block text-sm mb-2">Name *</label>
-            <input
-              name="name"
-              type="text"
-              required
-              className="w-full border border-gray-300 px-4 py-3 outline-none focus:border-black"
-            />
-          </div>
+        <form onSubmit={handleSubmit} className="space-y-6 max-w-xl">
+          {[
+            { label: "Name *", name: "name", type: "text" },
+            { label: "Email *", name: "email", type: "email" },
+            { label: "Company / Brand *", name: "company", type: "text" },
+            { label: "Estimated budget *", name: "budget", type: "text" },
+            { label: "Timeline *", name: "timeline", type: "text" },
+          ].map((field) => (
+            <div key={field.name}>
+              <label className={`block text-xs uppercase tracking-[0.15em] mb-2 ${d ? "text-gray-500" : "text-gray-400"}`}>{field.label}</label>
+              <input name={field.name} type={field.type} required className={inputClass} />
+            </div>
+          ))}
 
           <div>
-            <label className="block text-sm mb-2">Email *</label>
-            <input
-              name="email"
-              type="email"
-              required
-              className="w-full border border-gray-300 px-4 py-3 outline-none focus:border-black"
-            />
+            <label className={`block text-xs uppercase tracking-[0.15em] mb-2 ${d ? "text-gray-500" : "text-gray-400"}`}>What are you looking to build? *</label>
+            <textarea name="projectDetails" rows={4} required className={`${inputClass} resize-none`} />
           </div>
 
-          <div>
-            <label className="block text-sm mb-2">Company / Brand *</label>
-            <input
-              name="company"
-              type="text"
-              required
-              className="w-full border border-gray-300 px-4 py-3 outline-none focus:border-black"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm mb-2">
-              What are you looking to build? *
-            </label>
-            <textarea
-              name="projectDetails"
-              rows={5}
-              required
-              className="w-full border border-gray-300 px-4 py-3 outline-none focus:border-black resize-none"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm mb-2">Estimated budget *</label>
-            <input
-              name="budget"
-              type="text"
-              required
-              className="w-full border border-gray-300 px-4 py-3 outline-none focus:border-black"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm mb-2">Timeline *</label>
-            <input
-              name="timeline"
-              type="text"
-              required
-              className="w-full border border-gray-300 px-4 py-3 outline-none focus:border-black"
-            />
-          </div>
-
-          <label className="flex items-start gap-3 text-sm text-gray-600 leading-relaxed">
-            <input
-              type="checkbox"
-              required
-              className="mt-1 h-4 w-4 border-gray-300"
-            />
+          <label className={`flex items-start gap-3 text-sm leading-relaxed ${d ? "text-gray-400" : "text-gray-500"}`}>
+            <input type="checkbox" required className="mt-1 h-4 w-4 shrink-0" />
             <span>
-              I agree to the processing of my personal data in accordance with
-              the{" "}
-              <a href="/privacy-policy" className="underline underline-offset-4">
-                Privacy Policy
-              </a>
-              .
+              I agree to the processing of my personal data in accordance with the{" "}
+              <a href="/privacy-policy" className="underline underline-offset-4">Privacy Policy</a>.
             </span>
           </label>
 
           <button
             type="submit"
             disabled={isSubmitting}
-            className="bg-black text-white px-6 py-3 text-sm font-medium hover:opacity-90 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            className={`px-6 py-3 text-sm font-medium transition hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed ${d ? "bg-white text-black" : "bg-black text-white"}`}
           >
-            {isSubmitting ? "Sending..." : "Let’s build your brand"}
+            {isSubmitting ? "Sending..." : "Let's build your brand →"}
           </button>
 
-          {submitMessage && (
-            <p className="text-sm text-green-700">{submitMessage}</p>
-          )}
-
-          {submitError && (
-            <p className="text-sm text-red-600">{submitError}</p>
-          )}
+          {submitMessage && <p className="text-sm text-gray-400">{submitMessage}</p>}
+          {submitError && <p className="text-sm text-red-500">{submitError}</p>}
         </form>
       </section>
 
-      <footer className="mt-auto pt-20 pb-12 flex flex-col gap-4 text-sm text-gray-600 md:flex-row md:items-center md:justify-between">
-        <p>© 2026 ATTOM AGENCY. All rights reserved.</p>
-
-        <div className="flex flex-wrap items-center gap-6">
-          <a
-            href="/privacy-policy"
-            className="hover:text-black transition underline-offset-4 hover:underline"
-          >
-            Privacy Policy
-          </a>
-          <a
-            href="/cookie-policy"
-            className="hover:text-black transition underline-offset-4 hover:underline"
-          >
-            Cookie Policy
-          </a>
-          <a
-            href="/terms-and-conditions"
-            className="hover:text-black transition underline-offset-4 hover:underline"
-          >
-            Terms & Conditions
-          </a>
-        </div>
-      </footer>
+      <Footer />
     </main>
   );
 }
