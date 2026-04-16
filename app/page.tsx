@@ -4,9 +4,6 @@ import { useEffect, useState } from "react";
 
 export default function Home() {
   const [cookieChoice, setCookieChoice] = useState<string | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitMessage, setSubmitMessage] = useState<string | null>(null);
-  const [submitError, setSubmitError] = useState<string | null>(null);
 
   useEffect(() => {
     const savedChoice = localStorage.getItem("attom_cookie_consent");
@@ -20,286 +17,53 @@ export default function Home() {
     setCookieChoice(choice);
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    setIsSubmitting(true);
-    setSubmitMessage(null);
-    setSubmitError(null);
-
-    const form = e.currentTarget;
-    const formData = new FormData(form);
-
-    const name = String(formData.get("name") || "");
-    const email = String(formData.get("email") || "");
-    const company = String(formData.get("company") || "");
-    const projectDetails = String(formData.get("projectDetails") || "");
-    const budget = String(formData.get("budget") || "");
-    const timeline = String(formData.get("timeline") || "");
-
-    try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          company,
-          projectDetails,
-          budget,
-          timeline,
-        }),
-      });
-
-      const result = await res.json();
-
-      if (!res.ok) {
-        setSubmitError(
-          result.error || "There was an error sending your message."
-        );
-        return;
-      }
-
-      setSubmitMessage("Your message has been sent successfully.");
-      form.reset();
-    } catch (error) {
-      console.error(error);
-      setSubmitError("There was an error sending your message.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   return (
-    <main className="min-h-screen bg-white text-black px-6 py-8 md:px-12">
+    <main className="min-h-screen flex flex-col bg-white text-black px-6 pt-8 pb-0 md:px-12">
       <header className="flex items-center justify-between mb-24">
-        <p className="text-xl font-semibold">ATTOM AGENCY</p>
+        <a href="/">
+          <img src="/logo_v2.png" alt="ATTOM" className="h-12 md:h-16 w-auto" />
+        </a>
 
         <nav className="flex items-center gap-8 text-sm uppercase tracking-[0.15em]">
-          <a href="#about" className="hover:opacity-60">
+          <a href="/about" className="hover:opacity-60">
             ABOUT
           </a>
-          <a href="#services" className="hover:opacity-60">
+          <a href="/what-we-do" className="hover:opacity-60">
             WHAT WE DO
           </a>
-          <a href="#contact" className="hover:opacity-60">
+          <a href="/contact" className="hover:opacity-60">
             CONTACT
           </a>
         </nav>
       </header>
 
-      <section className="max-w-5xl mb-32">
-        <p className="text-sm mb-6 uppercase tracking-[0.2em] text-gray-500">
-          Creative Agency
-        </p>
+      {/* ── HERO ── */}
+      <section className="flex flex-1 items-center">
+        <div className="max-w-5xl">
+          <h1 className="text-5xl font-semibold leading-[1.05] md:text-[5.5rem] md:leading-[1.02]">
+            Most brands are built
+            <br />
+            to be seen.{" "}
+            <span className="italic font-light">Very few</span>
+            <br />
+            are built to last.
+          </h1>
 
-        <h1 className="text-5xl md:text-7xl font-semibold leading-[1.05] max-w-5xl mb-8">
-          Building brands that don’t blend in.
-        </h1>
+          <p className="mt-10 max-w-lg text-base leading-relaxed text-gray-500 md:text-lg">
+            We work on what holds them togheter.
+          </p>
 
-        <p className="text-lg md:text-xl text-gray-600 max-w-2xl mb-10 leading-relaxed">
-          Creative direction, brand strategy and digital growth for brands ready
-          to stand out and scale.
-        </p>
-
-        <div className="mt-8">
           <a
-            href="#contact"
-            className="inline-block bg-black text-white px-6 py-3 text-sm font-medium hover:opacity-90 transition"
+            href="/what-we-do"
+            className="mt-10 inline-block bg-black px-5 py-3 text-sm font-medium text-white transition hover:opacity-90"
           >
-            Let’s build your brand
+            See how →
           </a>
         </div>
       </section>
+      {/* ── FIM DO HERO ── */}
 
-      <section
-        id="about"
-        className="border-t border-gray-200 pt-16 pb-24 grid md:grid-cols-2 gap-12"
-      >
-        <div>
-          <p className="text-sm uppercase tracking-[0.2em] text-gray-500 mb-4">
-            About ATTOM
-          </p>
-        </div>
-
-        <div className="space-y-6">
-          <p className="text-2xl md:text-3xl leading-tight font-medium">
-            We build brands with intention.
-          </p>
-
-          <p className="text-base md:text-lg text-gray-600 leading-relaxed">
-            From strategy to execution, every decision is designed to create
-            clarity, consistency and long-term value.
-          </p>
-
-          <p className="text-base md:text-lg text-gray-600 leading-relaxed">
-            ATTOM is a creative agency focused on building strong, distinctive
-            brands that stand out and grow in a competitive digital landscape.
-          </p>
-
-          <p className="text-base md:text-lg text-gray-600 leading-relaxed">
-            We work with a select number of partners, taking a long-term
-            approach to create brands built to last.
-          </p>
-        </div>
-      </section>
-
-      <section
-        id="services"
-        className="border-t border-gray-200 pt-16 pb-24 grid md:grid-cols-2 gap-12"
-      >
-        <div>
-          <p className="text-sm uppercase tracking-[0.2em] text-gray-500 mb-4">
-            What we do
-          </p>
-        </div>
-
-        <div className="space-y-12">
-          <div>
-            <h3 className="text-2xl font-medium mb-3">Creative Direction</h3>
-            <p className="text-base md:text-lg text-gray-600 leading-relaxed max-w-xl">
-              We define visual language, art direction and creative systems that
-              give brands a strong and consistent identity.
-            </p>
-          </div>
-
-          <div>
-            <h3 className="text-2xl font-medium mb-3">Brand Strategy</h3>
-            <p className="text-base md:text-lg text-gray-600 leading-relaxed max-w-xl">
-              We build positioning, messaging and narrative clarity to create
-              brands with purpose and direction.
-            </p>
-          </div>
-
-          <div>
-            <h3 className="text-2xl font-medium mb-3">Digital Growth</h3>
-            <p className="text-base md:text-lg text-gray-600 leading-relaxed max-w-xl">
-              We design and optimise digital experiences focused on performance,
-              consistency and scalable growth.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section
-        id="contact"
-        className="border-t border-gray-200 pt-16 pb-24 grid md:grid-cols-2 gap-12"
-      >
-        <div>
-          <p className="text-sm uppercase tracking-[0.2em] text-gray-500 mb-4">
-            Contact
-          </p>
-
-          <h2 className="text-3xl md:text-4xl font-medium leading-tight max-w-md">
-            Let’s build something that stands out.
-          </h2>
-
-          <p className="text-base md:text-lg text-gray-600 leading-relaxed mt-6 max-w-md">
-            Tell us about your brand, goals and timeline. We’ll get back to you
-            with the next steps.
-          </p>
-        </div>
-
-        <form onSubmit={handleSubmit} className="space-y-5 max-w-xl">
-          <div>
-            <label className="block text-sm mb-2">Name *</label>
-            <input
-              name="name"
-              type="text"
-              required
-              className="w-full border border-gray-300 px-4 py-3 outline-none focus:border-black"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm mb-2">Email *</label>
-            <input
-              name="email"
-              type="email"
-              required
-              className="w-full border border-gray-300 px-4 py-3 outline-none focus:border-black"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm mb-2">Company / Brand *</label>
-            <input
-              name="company"
-              type="text"
-              required
-              className="w-full border border-gray-300 px-4 py-3 outline-none focus:border-black"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm mb-2">
-              What are you looking to build? *
-            </label>
-            <textarea
-              name="projectDetails"
-              rows={5}
-              required
-              className="w-full border border-gray-300 px-4 py-3 outline-none focus:border-black resize-none"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm mb-2">Estimated budget *</label>
-            <input
-              name="budget"
-              type="text"
-              required
-              className="w-full border border-gray-300 px-4 py-3 outline-none focus:border-black"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm mb-2">Timeline *</label>
-            <input
-              name="timeline"
-              type="text"
-              required
-              className="w-full border border-gray-300 px-4 py-3 outline-none focus:border-black"
-            />
-          </div>
-
-          <label className="flex items-start gap-3 text-sm text-gray-600 leading-relaxed">
-            <input
-              type="checkbox"
-              required
-              className="mt-1 h-4 w-4 border-gray-300"
-            />
-            <span>
-              I agree to the processing of my personal data in accordance with
-              the{" "}
-              <a href="/privacy-policy" className="underline underline-offset-4">
-                Privacy Policy
-              </a>
-              .
-            </span>
-          </label>
-
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="bg-black text-white px-6 py-3 text-sm font-medium hover:opacity-90 transition disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isSubmitting ? "Sending..." : "Let’s build your brand"}
-          </button>
-
-          {submitMessage && (
-            <p className="text-sm text-green-700">{submitMessage}</p>
-          )}
-
-          {submitError && (
-            <p className="text-sm text-red-600">{submitError}</p>
-          )}
-        </form>
-      </section>
-
-      <footer className="border-t border-gray-200 pt-8 pb-10 flex flex-col md:flex-row md:items-center md:justify-between gap-4 text-sm text-gray-600">
+      <footer className="mt-auto pt-20 pb-12 flex flex-col gap-4 text-sm text-gray-600 md:flex-row md:items-center md:justify-between">
         <p>© 2026 ATTOM AGENCY. All rights reserved.</p>
 
         <div className="flex flex-wrap items-center gap-6">
@@ -325,15 +89,18 @@ export default function Home() {
       </footer>
 
       {!cookieChoice && (
-        <div className="fixed bottom-6 left-6 right-6 md:left-12 md:right-12 z-50 border border-gray-200 bg-white p-5 shadow-lg">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+        <div className="fixed bottom-6 left-6 right-6 z-50 border border-gray-200 bg-white p-5 shadow-lg md:left-12 md:right-12">
+          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div className="max-w-2xl">
-              <p className="text-sm font-medium mb-2">Cookies</p>
-              <p className="text-sm text-gray-600 leading-relaxed">
+              <p className="mb-2 text-sm font-medium">Cookies</p>
+              <p className="text-sm leading-relaxed text-gray-600">
                 We use cookies to improve your browsing experience and analyse
                 website traffic. You can accept or reject non-essential cookies.
                 Read our{" "}
-                <a href="/cookie-policy" className="underline underline-offset-4">
+                <a
+                  href="/cookie-policy"
+                  className="underline underline-offset-4"
+                >
                   Cookie Policy
                 </a>{" "}
                 for more information.
@@ -343,13 +110,13 @@ export default function Home() {
             <div className="flex items-center gap-3">
               <button
                 onClick={() => handleCookieChoice("rejected")}
-                className="border border-gray-300 px-5 py-3 text-sm font-medium hover:border-black transition"
+                className="border border-gray-300 px-5 py-3 text-sm font-medium transition hover:border-black"
               >
                 Reject
               </button>
               <button
                 onClick={() => handleCookieChoice("accepted")}
-                className="bg-black text-white px-5 py-3 text-sm font-medium hover:opacity-90 transition"
+                className="bg-black px-5 py-3 text-sm font-medium text-white transition hover:opacity-90"
               >
                 Accept
               </button>

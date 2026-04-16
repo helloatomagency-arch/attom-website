@@ -1,0 +1,225 @@
+"use client";
+
+import { useState } from "react";
+
+export default function ContactPage() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState<string | null>(null);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    setIsSubmitting(true);
+    setSubmitMessage(null);
+    setSubmitError(null);
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    const name = String(formData.get("name") || "");
+    const email = String(formData.get("email") || "");
+    const company = String(formData.get("company") || "");
+    const projectDetails = String(formData.get("projectDetails") || "");
+    const budget = String(formData.get("budget") || "");
+    const timeline = String(formData.get("timeline") || "");
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          company,
+          projectDetails,
+          budget,
+          timeline,
+        }),
+      });
+
+      const result = await res.json();
+
+      if (!res.ok) {
+        setSubmitError(
+          result.error || "There was an error sending your message."
+        );
+        return;
+      }
+
+      setSubmitMessage("Your message has been sent successfully.");
+      form.reset();
+    } catch (error) {
+      console.error(error);
+      setSubmitError("There was an error sending your message.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <main className="min-h-screen flex flex-col bg-white text-black px-6 pt-8 pb-0 md:px-12">
+      <header className="flex items-center justify-between mb-24">
+        <a href="/">
+          <img
+            src="/logo_v2.png"
+            alt="ATTOM"
+            className="h-12 md:h-15 w-auto"
+          />
+        </a>
+
+        <nav className="flex items-center gap-8 text-sm uppercase tracking-[0.15em]">
+          <a href="/about" className="hover:opacity-60">
+            ABOUT
+          </a>
+          <a href="/what-we-do" className="hover:opacity-60">
+            WHAT WE DO
+          </a>
+          <a href="/contact" className="hover:opacity-60">
+            CONTACT
+          </a>
+        </nav>
+      </header>
+
+      <section className="pt-16 pb-24 grid md:grid-cols-2 gap-12">
+        <div>
+          <p className="text-sm uppercase tracking-[0.2em] text-gray-500 mb-4">
+            Contact
+          </p>
+
+          <h1 className="text-3xl md:text-4xl font-medium leading-tight max-w-md">
+            Let’s build something that stands out.
+          </h1>
+
+          <p className="text-base md:text-lg text-gray-600 leading-relaxed mt-6 max-w-md">
+            Tell us about your brand, goals and timeline. We’ll get back to you
+            with the next steps.
+          </p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-5 max-w-xl">
+          <div>
+            <label className="block text-sm mb-2">Name *</label>
+            <input
+              name="name"
+              type="text"
+              required
+              className="w-full border border-gray-300 px-4 py-3 outline-none focus:border-black"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm mb-2">Email *</label>
+            <input
+              name="email"
+              type="email"
+              required
+              className="w-full border border-gray-300 px-4 py-3 outline-none focus:border-black"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm mb-2">Company / Brand *</label>
+            <input
+              name="company"
+              type="text"
+              required
+              className="w-full border border-gray-300 px-4 py-3 outline-none focus:border-black"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm mb-2">
+              What are you looking to build? *
+            </label>
+            <textarea
+              name="projectDetails"
+              rows={5}
+              required
+              className="w-full border border-gray-300 px-4 py-3 outline-none focus:border-black resize-none"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm mb-2">Estimated budget *</label>
+            <input
+              name="budget"
+              type="text"
+              required
+              className="w-full border border-gray-300 px-4 py-3 outline-none focus:border-black"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm mb-2">Timeline *</label>
+            <input
+              name="timeline"
+              type="text"
+              required
+              className="w-full border border-gray-300 px-4 py-3 outline-none focus:border-black"
+            />
+          </div>
+
+          <label className="flex items-start gap-3 text-sm text-gray-600 leading-relaxed">
+            <input
+              type="checkbox"
+              required
+              className="mt-1 h-4 w-4 border-gray-300"
+            />
+            <span>
+              I agree to the processing of my personal data in accordance with
+              the{" "}
+              <a href="/privacy-policy" className="underline underline-offset-4">
+                Privacy Policy
+              </a>
+              .
+            </span>
+          </label>
+
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="bg-black text-white px-6 py-3 text-sm font-medium hover:opacity-90 transition disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isSubmitting ? "Sending..." : "Let’s build your brand"}
+          </button>
+
+          {submitMessage && (
+            <p className="text-sm text-green-700">{submitMessage}</p>
+          )}
+
+          {submitError && (
+            <p className="text-sm text-red-600">{submitError}</p>
+          )}
+        </form>
+      </section>
+
+      <footer className="mt-auto pt-20 pb-12 flex flex-col gap-4 text-sm text-gray-600 md:flex-row md:items-center md:justify-between">
+        <p>© 2026 ATTOM AGENCY. All rights reserved.</p>
+
+        <div className="flex flex-wrap items-center gap-6">
+          <a
+            href="/privacy-policy"
+            className="hover:text-black transition underline-offset-4 hover:underline"
+          >
+            Privacy Policy
+          </a>
+          <a
+            href="/cookie-policy"
+            className="hover:text-black transition underline-offset-4 hover:underline"
+          >
+            Cookie Policy
+          </a>
+          <a
+            href="/terms-and-conditions"
+            className="hover:text-black transition underline-offset-4 hover:underline"
+          >
+            Terms & Conditions
+          </a>
+        </div>
+      </footer>
+    </main>
+  );
+}

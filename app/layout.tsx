@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { DM_Sans, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import IntroAnimation from "./IntroAnimation.tsx";
+import CustomCursor from "./CustomCursor";
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
@@ -20,9 +21,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html
       lang="en"
@@ -30,6 +31,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <IntroAnimation />
+        <CustomCursor />
         {children}
       </body>
     </html>
