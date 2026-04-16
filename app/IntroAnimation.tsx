@@ -1,17 +1,39 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 
 const LETRAS = ["A", "T", "T", "O", "M", " ", "A", "G", "E", "N", "C", "Y"];
 
 export default function IntroAnimation() {
+  const pathname = usePathname();
   const [letraAtual, setLetraAtual] = useState(0);
   const [mostrarCompleto, setMostrarCompleto] = useState(false);
   const [mostrarBarra, setMostrarBarra] = useState(false);
   const [fadeOut, setFadeOut] = useState(false);
   const [terminado, setTerminado] = useState(false);
+  const [deveCorrer, setDeveCorrer] = useState(false);
 
   useEffect(() => {
+    // só corre na homepage
+    if (pathname !== "/") {
+      setTerminado(true);
+      return;
+    }
+
+    // só corre se ainda não correu nesta sessão
+    const jaCorreu = sessionStorage.getItem("attom_intro_done");
+    if (jaCorreu) {
+      setTerminado(true);
+      return;
+    }
+
+    setDeveCorrer(true);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!deveCorrer) return;
+
     if (letraAtual < LETRAS.length) {
       const timer = setTimeout(() => {
         setLetraAtual((prev) => prev + 1);
@@ -19,20 +41,20 @@ export default function IntroAnimation() {
       return () => clearTimeout(timer);
     }
 
-    // mostrar texto completo
     const timer1 = setTimeout(() => {
       setMostrarCompleto(true);
     }, 100);
 
-    // ativar animação da barra (ligeiro delay)
     const timerBar = setTimeout(() => {
       setMostrarBarra(true);
     }, 250);
 
-    // fade out
     const timer2 = setTimeout(() => {
       setFadeOut(true);
-      setTimeout(() => setTerminado(true), 600);
+      setTimeout(() => {
+        sessionStorage.setItem("attom_intro_done", "true");
+        setTerminado(true);
+      }, 600);
     }, 1200);
 
     return () => {
@@ -40,9 +62,10 @@ export default function IntroAnimation() {
       clearTimeout(timerBar);
       clearTimeout(timer2);
     };
-  }, [letraAtual]);
+  }, [letraAtual, deveCorrer]);
 
   if (terminado) return null;
+  if (!deveCorrer) return null;
 
   return (
     <div
