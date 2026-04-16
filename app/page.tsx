@@ -21,12 +21,12 @@ export default function Home() {
   };
 
   return (
-    <main className={`min-h-screen flex flex-col px-6 pb-0 md:px-12 ${isDark ? "bg-black text-white" : "bg-white text-black"}`}>
+    <main className={`min-h-screen flex flex-col ${isDark ? "bg-black text-white" : "bg-white text-black"}`}>
 
       <Header />
 
       {/* ── HERO ── */}
-      <section className="flex flex-1 items-center">
+      <section className="flex flex-1 items-center px-6 md:px-12">
         <div className="max-w-5xl">
           <h1 className="text-5xl font-semibold leading-[1.05] md:text-[5.5rem] md:leading-[1.02]">
             Most brands are built
