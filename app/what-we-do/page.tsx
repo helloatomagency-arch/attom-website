@@ -1,227 +1,186 @@
 "use client";
 
 import { useEffect } from "react";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+
+const services = [
+  {
+    number: "01",
+    title: "Brand Strategy",
+    tagline: "Antes de comunicar, é preciso decidir.",
+    description:
+      "Uma marca sem estratégia é apenas estética à espera de uma razão para existir. Aqui definimos o núcleo — o posicionamento, a proposta de valor, a arquitetura que sustenta todas as decisões que se seguem. É o trabalho invisível que torna tudo o resto inevitável.",
+    tags: ["Posicionamento", "Proposta de valor", "Arquitetura de marca", "Naming", "Estratégia de comunicação"],
+  },
+  {
+    number: "02",
+    title: "Brand & Identity",
+    tagline: "Uma marca não se desenha. Define-se.",
+    description:
+      "Identidade não é logótipo. É o sistema completo através do qual uma marca se torna reconhecível — não apenas visualmente, mas em cada ponto de contacto. Construímos sistemas visuais que têm coerência interna e capacidade de escalar sem perder carácter.",
+    tags: ["Identidade visual", "Direção criativa", "Sistema de marca", "Guidelines"],
+  },
+  {
+    number: "03",
+    title: "Content & Narrative",
+    tagline: "O que uma marca diz é tão importante como o que é.",
+    description:
+      "Conteúdo sem narrativa é ruído. Trabalhamos a linguagem como sistema — não como produção — para que cada peça, em qualquer canal, seja reconhecível como parte de um todo. A voz de uma marca é um activo estratégico. Tratamo-la como tal.",
+    tags: ["Storytelling", "Content strategy", "Social media", "Produção de conteúdo"],
+  },
+  {
+    number: "04",
+    title: "Growth & Performance",
+    tagline: "A estrutura que traduz intenção em resultado.",
+    description:
+      "Uma marca bem construída merece ser encontrada. Esta área não existe à parte da estratégia — é a sua consequência natural. Activamos os canais certos, com a mensagem certa, para as pessoas certas. Performance não é volume. É precisão.",
+    tags: ["Paid media", "Performance marketing", "SEO", "Funis e conversão"],
+  },
+  {
+    number: "05",
+    title: "Digital & Experience",
+    tagline: "O espaço digital é um espaço de marca.",
+    description:
+      "Um website não é uma brochura. É o lugar onde a marca existe com mais controlo e mais responsabilidade. Desenhamos experiências digitais que respeitam o utilizador e expressam a marca — onde UX e identidade não competem, mas se tornam a mesma coisa.",
+    tags: ["Websites", "Landing pages", "UX/UI", "Experiência digital"],
+  },
+  {
+    number: "06",
+    title: "Influence & Culture",
+    tagline: "As marcas que duram entram na cultura. Não apenas no feed.",
+    description:
+      "Influência real não se compra — constrói-se. Através das pessoas certas, das histórias certas e das parcerias que fazem sentido. Trabalhamos neste espaço com a mesma exigência editorial que aplicamos a tudo o resto, porque a cultura é o território onde as marcas se tornam referências.",
+    tags: ["Influencer marketing", "PR e imprensa", "Parcerias", "Ativações"],
+  },
+  {
+    number: "07",
+    title: "People & Knowledge",
+    tagline: "O conhecimento que uma equipa tem é o limite do que uma marca pode ser.",
+    description:
+      "Toda a empresa é obrigada a formar. Poucas formam com intenção. Desenvolvemos programas de formação obrigatória — legalmente enquadrados, mas construídos à medida de cada organização. Não entregamos conteúdo genérico. Entregamos formação que serve a cultura da empresa, desenvolve as pessoas certas e cumpre o que a lei exige sem desperdiçar o que o tempo permite.",
+    tags: ["Formação obrigatória certificada", "Programas à medida", "Formação em contexto de marca", "Desenvolvimento de equipas"],
+  },
+];
 
 export default function WhatWeDoPage() {
   useEffect(() => {
     const elements = document.querySelectorAll(".reveal");
-
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
-          }
+          if (entry.isIntersecting) entry.target.classList.add("visible");
         });
       },
-      {
-        threshold: 0.12,
-      }
+      { threshold: 0.08 }
     );
-
     elements.forEach((el) => observer.observe(el));
-
     return () => observer.disconnect();
   }, []);
 
   return (
-    <main className="min-h-screen flex flex-col bg-white text-black px-6 pt-8 pb-0 md:px-12">
-      {/* HEADER (mantém igual) */}
-      <header className="flex items-center justify-between mb-24">
-        <a href="/">
-          <img
-            src="/logo_v2.png"
-            alt="ATTOM"
-            className="h-12 md:h-15 w-auto"
-          />
-        </a>
-
-        <nav className="flex items-center gap-8 text-sm uppercase tracking-[0.15em]">
-          <a href="/about" className="hover:opacity-60">
-            ABOUT
-          </a>
-          <a href="/what-we-do" className="hover:opacity-60">
-            WHAT WE DO
-          </a>
-          <a href="/contact" className="hover:opacity-60">
-            CONTACT
-          </a>
-        </nav>
-      </header>
+    <main className="min-h-screen flex flex-col bg-white text-black">
+      <Header />
 
       {/* HERO */}
-      <section className="max-w-4xl mb-32">
-        <p className="text-sm uppercase tracking-[0.2em] text-gray-500 mb-6">
-          WHAT WE DO
+      <section className="px-6 md:px-16 lg:px-24 pt-8 pb-16 md:pb-20">
+        <p className="text-[11px] uppercase tracking-[0.3em] text-gray-400 mb-12">
+          What We Do
         </p>
 
-        <h1 className="text-3xl md:text-5xl font-medium leading-tight mb-6">
-          O que fazemos não se separa de como pensamos.
+        <h1 className="text-[clamp(3rem,8vw,7rem)] font-medium leading-[0.95] tracking-[-0.03em] mb-10">
+          O que fazemos
+          <br />
+          <em className="font-extralight italic">
+            é inseparável de como pensamos.
+          </em>
         </h1>
 
-        <p className="text-lg md:text-xl text-gray-600">
-          Porque quando se separa, deixa de funcionar.
+        <div className="w-8 h-px bg-gray-300 mb-8" />
+
+        <p className="text-xl md:text-2xl text-gray-600 leading-[1.75] max-w-3xl">
+          Não oferecemos serviços isolados. Oferecemos sistemas.
         </p>
       </section>
 
       {/* INTRO */}
-      <section className="max-w-2xl mb-40">
-        <p className="text-lg md:text-xl leading-relaxed text-gray-700">
-          Não organizamos o trabalho em serviços. Construímos sistemas —
-          coerentes, intencionais e sustentáveis.
+      <section className="px-6 md:px-16 lg:px-24 pb-20 md:pb-32">
+        <p className="text-xl md:text-2xl text-gray-600 leading-[1.75] max-w-4xl">
+          Cada área que ativamos é parte de um todo coerente — porque uma marca
+          que não é coerente internamente nunca o será externamente. Trabalhamos
+          de forma integrada ou de forma focada, consoante o que cada marca
+          precisa. Mas o princípio é sempre o mesmo: nada existe por acaso, e
+          nada funciona sozinho.
+        </p>
+        <p className="text-xl md:text-2xl text-gray-400 leading-[1.75] max-w-4xl mt-6 font-light italic">
+          O que se segue não é um catálogo. É uma descrição de como pensamos o
+          trabalho — e do que está disponível para quem quiser construir algo
+          que dure.
         </p>
       </section>
 
-      {/* BLOCOS */}
-      <section className="flex flex-col gap-40">
-        {/* 01 */}
-        <div className="max-w-xl reveal">
-          <p className="text-sm text-gray-400 mb-2">01</p>
-          <h2 className="text-2xl md:text-3xl font-medium mb-4">
-            Brand Strategy
-          </h2>
-          <p className="text-xl mb-4">
-            Antes de comunicar, é preciso decidir.
-          </p>
-          <p className="text-gray-600 leading-relaxed">
-            Definimos o núcleo da marca — aquilo que orienta todas as decisões
-            seguintes. Onde a marca existe, o que oferece e porque isso importa.
-          </p>
-          <p className="text-sm text-gray-400 mt-4">
-            Posicionamento · Proposta de valor · Arquitetura · Naming
-          </p>
-        </div>
+      {/* SERVIÇOS */}
+      <section className="px-6 md:px-16 lg:px-24 pb-32 md:pb-48">
+        <div className="divide-y divide-gray-100">
+          {services.map((s) => (
+            <div key={s.number} className="reveal py-16 md:py-20">
 
-        {/* 02 */}
-        <div className="max-w-xl ml-auto reveal">
-          <p className="text-sm text-gray-400 mb-2">02</p>
-          <h2 className="text-2xl md:text-3xl font-medium mb-4">
-            Brand & Identity
-          </h2>
-          <p className="text-xl mb-4">
-            Uma marca não se desenha. Define-se.
-          </p>
-          <p className="text-gray-600 leading-relaxed">
-            Criamos sistemas visuais com coerência e capacidade de evoluir sem
-            perder carácter. Cada detalhe deve reforçar o todo.
-          </p>
-          <p className="text-sm text-gray-400 mt-4">
-            Identidade visual · Direção criativa · Sistema · Guidelines
-          </p>
-        </div>
+              {/* NÚMERO + TÍTULO */}
+              <div className="flex items-baseline gap-4 mb-8">
+                <span className="text-3xl md:text-5xl font-medium text-gray-200 tracking-tight shrink-0">
+                  {s.number}
+                </span>
+                <h2 className="text-3xl md:text-5xl font-medium tracking-[-0.02em]">
+                  {s.title}
+                </h2>
+              </div>
 
-        {/* 03 */}
-        <div className="max-w-xl reveal">
-          <p className="text-sm text-gray-400 mb-2">03</p>
-          <h2 className="text-2xl md:text-3xl font-medium mb-4">
-            Content & Narrative
-          </h2>
-          <p className="text-xl mb-4">
-            Toda a marca comunica. Poucas dizem algo.
-          </p>
-          <p className="text-gray-600 leading-relaxed">
-            Construímos linguagem clara e consistente para que cada peça faça
-            parte do mesmo sistema. Não produzimos volume. Criamos significado.
-          </p>
-          <p className="text-sm text-gray-400 mt-4">
-            Storytelling · Content strategy · Social · Produção
-          </p>
-        </div>
+              {/* TAGLINE + DESCRIÇÃO */}
+              <div className="max-w-3xl mb-10">
+                <p className="text-xl md:text-2xl font-medium mb-4 text-black">
+                  {s.tagline}
+                </p>
+                <p className="text-lg md:text-xl text-gray-600 leading-[1.75]">
+                  {s.description}
+                </p>
+              </div>
 
-        {/* 04 */}
-        <div className="max-w-xl ml-auto reveal">
-          <p className="text-sm text-gray-400 mb-2">04</p>
-          <h2 className="text-2xl md:text-3xl font-medium mb-4">
-            Growth & Performance
-          </h2>
-          <p className="text-xl mb-4">
-            Crescimento não é uma tática. É consequência.
-          </p>
-          <p className="text-gray-600 leading-relaxed">
-            Trabalhamos aquisição e conversão como extensão da estratégia. Dados
-            informam — não substituem pensamento.
-          </p>
-          <p className="text-sm text-gray-400 mt-4">
-            Paid media · Performance · SEO · Conversão
-          </p>
-        </div>
+              {/* TAGS */}
+              <div className="flex flex-wrap items-center gap-x-2 gap-y-2">
+                {s.tags.map((tag, i) => (
+                  <span key={tag} className="flex items-center gap-2">
+                    <span className="text-sm text-gray-400">{tag}</span>
+                    {i < s.tags.length - 1 && (
+                      <span className="text-gray-300 text-base leading-none">·</span>
+                    )}
+                  </span>
+                ))}
+              </div>
 
-        {/* 05 */}
-        <div className="max-w-xl reveal">
-          <p className="text-sm text-gray-400 mb-2">05</p>
-          <h2 className="text-2xl md:text-3xl font-medium mb-4">
-            Digital & Experience
-          </h2>
-          <p className="text-xl mb-4">
-            O digital é onde a marca é testada.
-          </p>
-          <p className="text-gray-600 leading-relaxed">
-            Criamos experiências digitais onde estrutura, conteúdo e interface
-            trabalham como um todo.
-          </p>
-          <p className="text-sm text-gray-400 mt-4">
-            Websites · UX/UI · Landing pages · Experiência
-          </p>
-        </div>
-
-        {/* 06 */}
-        <div className="max-w-xl ml-auto reveal">
-          <p className="text-sm text-gray-400 mb-2">06</p>
-          <h2 className="text-2xl md:text-3xl font-medium mb-4">
-            Influence & Culture
-          </h2>
-          <p className="text-xl mb-4">
-            As marcas que duram entram na cultura.
-          </p>
-          <p className="text-gray-600 leading-relaxed">
-            Trabalhamos com pessoas, plataformas e momentos que ampliam a marca
-            sem a diluir.
-          </p>
-          <p className="text-sm text-gray-400 mt-4">
-            Influência · PR · Parcerias · Ativações
-          </p>
+            </div>
+          ))}
         </div>
       </section>
 
       {/* FECHO */}
-      <section className="text-center mt-40 mb-20">
-        <p className="text-xl mb-6">
-          Não fazemos tudo. Fazemos apenas o que importa.
+      <section className="px-6 md:px-16 lg:px-24 pb-32 md:pb-48 flex flex-col items-start gap-8">
+        <p className="text-2xl md:text-4xl font-medium leading-[1.1] tracking-[-0.02em]">
+          Não fazemos tudo.
+          <br />
+          <em className="font-extralight italic text-gray-400">
+            Fazemos apenas o que importa.
+          </em>
         </p>
 
         <a
           href="/contact"
-          className="inline-block border border-black px-6 py-3 text-sm uppercase tracking-widest hover:bg-black hover:text-white transition"
+          className="inline-block bg-black text-white px-6 py-3 text-sm font-medium hover:opacity-90 transition"
         >
-          Falar connosco
+          Falar connosco →
         </a>
       </section>
 
-      {/* FOOTER (mantém igual) */}
-      <footer className="mt-auto pt-20 pb-12 flex flex-col gap-4 text-sm text-gray-600 md:flex-row md:items-center md:justify-between">
-        <p>© 2026 ATTOM AGENCY. All rights reserved.</p>
-
-        <div className="flex flex-wrap items-center gap-6">
-          <a
-            href="/privacy-policy"
-            className="hover:text-black transition underline-offset-4 hover:underline"
-          >
-            Privacy Policy
-          </a>
-          <a
-            href="/cookie-policy"
-            className="hover:text-black transition underline-offset-4 hover:underline"
-          >
-            Cookie Policy
-          </a>
-          <a
-            href="/terms-and-conditions"
-            className="hover:text-black transition underline-offset-4 hover:underline"
-          >
-            Terms & Conditions
-          </a>
-        </div>
-      </footer>
+      <Footer />
     </main>
   );
 }
