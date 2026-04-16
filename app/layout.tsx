@@ -7,16 +7,28 @@ import CustomCursor from "./CustomCursor";
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "ATTOM AGENCY",
-  description: "Creative direction, brand strategy and digital growth.",
+  title: "ATTOM Agency",
+  description:
+    "Brand strategy, creative direction and digital growth — built from the inside out.",
+  openGraph: {
+    title: "ATTOM Agency",
+    description:
+      "Brand strategy, creative direction and digital growth — built from the inside out.",
+    url: "https://attom.agency",
+    siteName: "ATTOM Agency",
+    locale: "en_US",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
