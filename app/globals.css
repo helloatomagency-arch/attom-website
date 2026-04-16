@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 :root {
   --background: #ffffff;
@@ -21,6 +19,12 @@
   }
 }
 
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
@@ -38,6 +42,7 @@ body {
 
 * {
   cursor: none !important;
+  box-sizing: border-box;
 }
 
 .cursor {
