@@ -9,42 +9,65 @@ export default function Header() {
   const d = theme === "dark";
 
   return (
-    <header className={`flex items-center justify-between pt-8 pb-0 mb-24 px-6 md:px-12 ${d ? "bg-black" : "bg-white"}`}>
-      {/* LOGO */}
-      <Link href="/">
-        <Image
-          src="/logo_v2.png"
-          alt="ATTOM"
-          width={160}
-          height={64}
-          className="h-12 md:h-16 w-auto"
-          style={d ? { filter: "invert(1)" } : {}}
-          priority
-        />
-      </Link>
+    <>
+      <header className={`flex items-center justify-between pt-8 pb-0 mb-24 px-6 md:px-12 ${d ? "bg-black" : "bg-white"}`}>
+        {/* LOGO */}
+        <Link href="/">
+          <Image
+            src="/logo_v2.png"
+            alt="ATTOM"
+            width={160}
+            height={64}
+            className="h-12 md:h-16 w-auto"
+            style={d ? { filter: "invert(1)" } : {}}
+            priority
+          />
+        </Link>
 
-      {/* NAV + TOGGLES */}
-      <div className="flex items-center gap-8">
+        {/* NAV */}
         <nav className={`flex items-center gap-8 text-sm uppercase tracking-[0.15em] ${d ? "text-white" : "text-black"}`}>
           <Link href="/about" className="hover:opacity-60 transition">About</Link>
           <Link href="/what-we-do" className="hover:opacity-60 transition">What We Do</Link>
           <Link href="/contact" className="hover:opacity-60 transition">Contact</Link>
         </nav>
+      </header>
 
-        {/* TOGGLES */}
-        <div className="flex flex-col items-end gap-1">
-          <div className="flex items-center gap-1 text-[11px] tracking-[0.15em] uppercase">
-            <button onClick={() => setLang("en")} className={`transition ${lang === "en" ? (d ? "text-white font-medium" : "text-black font-medium") : "text-gray-400"}`}>EN</button>
-            <span className="text-gray-400">|</span>
-            <button onClick={() => setLang("pt")} className={`transition ${lang === "pt" ? (d ? "text-white font-medium" : "text-black font-medium") : "text-gray-400"}`}>PT</button>
-          </div>
-          <div className="flex items-center gap-1 text-[11px] tracking-[0.15em] uppercase">
-            <button onClick={() => setTheme("light")} className={`transition ${theme === "light" ? (d ? "text-white font-medium" : "text-black font-medium") : "text-gray-400"}`}>Light</button>
-            <span className="text-gray-400">|</span>
-            <button onClick={() => setTheme("dark")} className={`transition ${theme === "dark" ? (d ? "text-white font-medium" : "text-black font-medium") : "text-gray-400"}`}>Dark</button>
-          </div>
+      {/* PAINEL LATERAL FIXO */}
+      <div className="fixed right-6 top-1/2 -translate-y-1/2 z-50 flex flex-col items-end gap-3">
+        {/* LANG */}
+        <div className={`flex items-center gap-1 text-[11px] tracking-[0.15em] uppercase ${d ? "text-white" : "text-black"}`}>
+          <button
+            onClick={() => setLang("en")}
+            className={`transition ${lang === "en" ? "font-medium" : "text-gray-400"}`}
+          >
+            EN
+          </button>
+          <span className="text-gray-400">|</span>
+          <button
+            onClick={() => setLang("pt")}
+            className={`transition ${lang === "pt" ? "font-medium" : "text-gray-400"}`}
+          >
+            PT
+          </button>
+        </div>
+
+        {/* THEME */}
+        <div className={`flex items-center gap-1 text-[11px] tracking-[0.15em] uppercase ${d ? "text-white" : "text-black"}`}>
+          <button
+            onClick={() => setTheme("light")}
+            className={`transition ${theme === "light" ? "font-medium" : "text-gray-400"}`}
+          >
+            Light
+          </button>
+          <span className="text-gray-400">|</span>
+          <button
+            onClick={() => setTheme("dark")}
+            className={`transition ${theme === "dark" ? "font-medium" : "text-gray-400"}`}
+          >
+            Dark
+          </button>
         </div>
       </div>
-    </header>
+    </>
   );
 }
