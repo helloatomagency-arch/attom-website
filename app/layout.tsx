@@ -45,7 +45,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <AppProvider>
-          <GoogleAnalytics measurementId="G-Z369B68MC5" />
+          <GoogleAnalytics measurementId="G-4TR91NTB9M" />
           <IntroAnimation />
           <CustomCursor />
           {children}
