@@ -4,6 +4,7 @@ import "./globals.css";
 import IntroAnimation from "./IntroAnimation";
 import CustomCursor from "./CustomCursor";
 import { AppProvider } from "@/contexts/AppContext";
+import GoogleAnalytics from "./GoogleAnalytics";
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
@@ -44,6 +45,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <AppProvider>
+          <GoogleAnalytics measurementId="G-Z369B68MC5" />
           <IntroAnimation />
           <CustomCursor />
           {children}
