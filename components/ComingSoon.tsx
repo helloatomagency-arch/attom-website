@@ -95,7 +95,7 @@ export default function ComingSoon() {
     <main className={`min-h-screen flex flex-col ${d ? "bg-black text-white" : "bg-white text-black"}`}>
 
       {/* HEADER — logo + botões inline no mobile, painel fixo no desktop */}
-      <header className={`flex items-center justify-between pt-8 pb-0 mb-24 px-6 md:px-12 ${d ? "bg-black" : "bg-white"}`}>
+      <header className={`flex items-center justify-between pt-8 pb-0 mb-8 md:mb-24 px-6 md:px-12 ${d ? "bg-black" : "bg-white"}`}>
         <Link href="/">
           <Image
             src="/logo_v2.png"
