@@ -25,8 +25,17 @@ body {
 }
 
 * {
-  cursor: none !important;
   box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  * {
+    cursor: none !important;
+  }
+
+  input, button, a, select, textarea {
+    cursor: none !important;
+  }
 }
 
 .reveal {
