@@ -94,8 +94,8 @@ export default function ComingSoon() {
   return (
     <main className={`min-h-screen flex flex-col ${d ? "bg-black text-white" : "bg-white text-black"}`}>
 
-      {/* HEADER */}
-      <header className={`flex items-center pt-8 pb-0 mb-24 px-6 md:px-12 ${d ? "bg-black" : "bg-white"}`}>
+      {/* HEADER — logo + botões inline no mobile, painel fixo no desktop */}
+      <header className={`flex items-center justify-between pt-8 pb-0 mb-24 px-6 md:px-12 ${d ? "bg-black" : "bg-white"}`}>
         <Link href="/">
           <Image
             src="/logo_v2.png"
@@ -107,10 +107,24 @@ export default function ComingSoon() {
             priority
           />
         </Link>
+
+        {/* Botões visíveis só no mobile */}
+        <div className={`flex flex-col items-end gap-2 md:hidden text-[11px] tracking-[0.15em] uppercase ${d ? "text-white" : "text-black"}`}>
+          <div className="flex items-center gap-1">
+            <button onClick={() => setLang("en")} className={`transition ${lang === "en" ? "font-medium" : "text-gray-400"}`}>EN</button>
+            <span className="text-gray-400">|</span>
+            <button onClick={() => setLang("pt")} className={`transition ${lang === "pt" ? "font-medium" : "text-gray-400"}`}>PT</button>
+          </div>
+          <div className="flex items-center gap-1">
+            <button onClick={() => setTheme("light")} className={`transition ${theme === "light" ? "font-medium" : "text-gray-400"}`}>Light</button>
+            <span className="text-gray-400">|</span>
+            <button onClick={() => setTheme("dark")} className={`transition ${theme === "dark" ? "font-medium" : "text-gray-400"}`}>Dark</button>
+          </div>
+        </div>
       </header>
 
-      {/* PAINEL LATERAL FIXO */}
-      <div className="fixed right-6 top-1/2 -translate-y-1/2 z-50 flex flex-col items-end gap-3">
+      {/* PAINEL LATERAL FIXO — só no desktop */}
+      <div className="hidden md:flex fixed right-6 top-1/2 -translate-y-1/2 z-50 flex-col items-end gap-3">
         <div className={`flex items-center gap-1 text-[11px] tracking-[0.15em] uppercase ${d ? "text-white" : "text-black"}`}>
           <button
             onClick={() => setLang("en")}
