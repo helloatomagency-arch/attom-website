@@ -159,7 +159,7 @@ export default function ComingSoon() {
       </div>
 
       {/* BODY */}
-      <section className="flex flex-1 items-center justify-center px-6 md:px-12">
+      <section className="flex flex-1 items-start md:items-center justify-center px-6 md:px-12 pt-8 md:pt-0">
         <div className="flex flex-col items-center text-center gap-10 w-full max-w-lg">
 
           <h1 className="text-5xl md:text-[5.5rem] font-semibold leading-[1.02] tracking-tight">
